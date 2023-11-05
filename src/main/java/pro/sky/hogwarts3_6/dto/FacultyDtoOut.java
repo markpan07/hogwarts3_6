@@ -1,5 +1,7 @@
 package pro.sky.hogwarts3_6.dto;
 
+import pro.sky.hogwarts3_6.model.Faculty;
+
 import java.util.Objects;
 
 public class FacultyDtoOut {

@@ -23,6 +23,19 @@ public class Student {
         this.age = age;
     }
 
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, faculty);
+    }
+
     public Long getId() {
         return id;
     }
@@ -53,6 +66,7 @@ public class Student {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", faculty id=" + faculty.getId() +
                 '}';
     }
 
@@ -61,11 +75,7 @@ public class Student {
         if (this == o) return true;
         if (!(o instanceof Student)) return false;
         Student student = (Student) o;
-        return Objects.equals(id, student.id);
+        return age == student.age && Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(faculty, student.faculty);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
