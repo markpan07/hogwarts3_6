@@ -12,6 +12,9 @@ import pro.sky.hogwarts3_6.repository.AvatarRepository;
 import pro.sky.hogwarts3_6.repository.FacultyRepository;
 import pro.sky.hogwarts3_6.repository.StudentRepository;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @Service
 public class StudentService {
 
@@ -53,5 +56,20 @@ public class StudentService {
         StudentDtoOut dto = studentMapper.toDto(studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException(id)));
         studentRepository.deleteById(id);
         return dto;
+    }
+
+
+    public Collection<StudentDtoOut> getAllStudents() {
+        Collection<StudentDtoOut> collection = studentRepository.findAll().stream()
+                .map(entity -> studentMapper.toDto(entity))
+                .collect(Collectors.toList());
+        return collection;
+    }
+
+    public Collection<StudentDtoOut> findByAge(Integer age) {
+        Collection<StudentDtoOut> collection = studentRepository.findByAge(age).stream()
+                .map(entity -> studentMapper.toDto(entity))
+                .collect(Collectors.toList());
+        return collection;
     }
 }

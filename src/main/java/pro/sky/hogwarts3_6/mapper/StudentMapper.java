@@ -41,10 +41,12 @@ public class StudentMapper {
 
     public Student toEntity(StudentDtoIn dto) {
         Student entity = new Student();
+        Long facultyId = dto.getFacultyId();
         entity.setName(dto.getName());
         entity.setAge(dto.getAge());
-        entity.setFaculty(facultyRepository.findById(dto.getFacultyId())
-                .orElseThrow(() -> new FacultyNotFoundException(dto.getFacultyId())));
+        entity.setFaculty(facultyRepository.findById(facultyId)
+                .orElseThrow(() -> new FacultyNotFoundException(facultyId)));
+
         return entity;
     }
 }

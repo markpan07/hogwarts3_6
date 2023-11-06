@@ -10,6 +10,8 @@ import pro.sky.hogwarts3_6.repository.StudentRepository;
 import pro.sky.hogwarts3_6.service.FacultyService;
 import pro.sky.hogwarts3_6.service.StudentService;
 
+import java.util.Collection;
+
 @RestController
 @RequestMapping("/students")
 public class StudentController {
@@ -40,5 +42,13 @@ public class StudentController {
     @DeleteMapping("{id}")
     public StudentDtoOut deleteStudent(@PathVariable Long id) {
         return studentService.deleteStudent(id);
+    }
+
+    @GetMapping()
+    public Collection<StudentDtoOut> getAllStudents(@RequestParam(required = false) Integer age) {
+        if (age == null) {
+            return studentService.getAllStudents();
+        }
+        return studentService.findByAge(age);
     }
 }

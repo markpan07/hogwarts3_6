@@ -10,6 +10,10 @@ import pro.sky.hogwarts3_6.model.Faculty;
 import pro.sky.hogwarts3_6.repository.FacultyRepository;
 import pro.sky.hogwarts3_6.repository.StudentRepository;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class FacultyService {
 
@@ -48,5 +52,19 @@ public class FacultyService {
         FacultyDtoOut dto = facultyMapper.toDto(facultyRepository.findById(id).orElseThrow(()-> new FacultyNotFoundException(id)));
         facultyRepository.deleteById(id);
         return dto;
+    }
+
+    public Collection<FacultyDtoOut> findByColor(String color) {
+        List<FacultyDtoOut> collection = facultyRepository.findByColor(color).stream()
+                .map(entity -> facultyMapper.toDto(entity))
+                .collect(Collectors.toList());
+        return collection;
+    }
+
+    public Collection<FacultyDtoOut> getAllFaculties() {
+        List<FacultyDtoOut> collection = facultyRepository.findAll().stream()
+                .map(entity -> facultyMapper.toDto(entity))
+                .collect(Collectors.toList());
+        return collection;
     }
 }
