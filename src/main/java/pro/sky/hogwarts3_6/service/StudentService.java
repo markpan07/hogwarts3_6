@@ -1,6 +1,7 @@
 package pro.sky.hogwarts3_6.service;
 
 import org.springframework.stereotype.Service;
+import pro.sky.hogwarts3_6.dto.FacultyDtoOut;
 import pro.sky.hogwarts3_6.dto.StudentDtoIn;
 import pro.sky.hogwarts3_6.dto.StudentDtoOut;
 import pro.sky.hogwarts3_6.exception.FacultyNotFoundException;
@@ -71,5 +72,17 @@ public class StudentService {
                 .map(entity -> studentMapper.toDto(entity))
                 .collect(Collectors.toList());
         return collection;
+    }
+
+    public Collection<StudentDtoOut> findByAgeBetween(Integer min, Integer max) {
+        Collection<StudentDtoOut> collection = studentRepository.findByAgeBetween(min, max).stream()
+                .map(entity -> studentMapper.toDto(entity))
+                .collect(Collectors.toList());
+        return collection;
+    }
+
+    public FacultyDtoOut getFacultyByStudentId(Long id) {
+        Student student = studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException(id));
+        return facultyMapper.toDto(student.getFaculty());
     }
 }

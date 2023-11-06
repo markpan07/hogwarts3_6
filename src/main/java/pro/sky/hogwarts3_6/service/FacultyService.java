@@ -3,6 +3,7 @@ package pro.sky.hogwarts3_6.service;
 import org.springframework.stereotype.Service;
 import pro.sky.hogwarts3_6.dto.FacultyDtoIn;
 import pro.sky.hogwarts3_6.dto.FacultyDtoOut;
+import pro.sky.hogwarts3_6.dto.StudentDtoOut;
 import pro.sky.hogwarts3_6.exception.FacultyNotFoundException;
 import pro.sky.hogwarts3_6.mapper.FacultyMapper;
 import pro.sky.hogwarts3_6.mapper.StudentMapper;
@@ -54,8 +55,8 @@ public class FacultyService {
         return dto;
     }
 
-    public Collection<FacultyDtoOut> findByColor(String color) {
-        List<FacultyDtoOut> collection = facultyRepository.findByColor(color).stream()
+    public Collection<FacultyDtoOut> findByColorOrName(String colorOrName) {
+        List<FacultyDtoOut> collection = facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(colorOrName, colorOrName).stream()
                 .map(entity -> facultyMapper.toDto(entity))
                 .collect(Collectors.toList());
         return collection;
@@ -66,5 +67,11 @@ public class FacultyService {
                 .map(entity -> facultyMapper.toDto(entity))
                 .collect(Collectors.toList());
         return collection;
+    }
+
+    public Collection<StudentDtoOut> getStudentsByFacultyId(Long id) {
+        return studentRepository.findByFaculty_Id(id).stream()
+                .map(entity -> studentMapper.toDto(entity))
+                .collect(Collectors.toList());
     }
 }

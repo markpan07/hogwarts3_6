@@ -45,10 +45,20 @@ public class StudentController {
     }
 
     @GetMapping()
-    public Collection<StudentDtoOut> getAllStudents(@RequestParam(required = false) Integer age) {
-        if (age == null) {
-            return studentService.getAllStudents();
+    public Collection<StudentDtoOut> getAllStudents(@RequestParam(required = false) Integer min,
+                                                    @RequestParam(required = false) Integer max,
+                                                    @RequestParam(required = false) Integer age
+    ) {
+        if (min != null && max != null) {
+            return studentService.findByAgeBetween(min, max);
+        } else if (age != null) {
+            return studentService.findByAge(age);
         }
-        return studentService.findByAge(age);
+        return studentService.getAllStudents();
+    }
+
+    @GetMapping("{id}/faculty")
+    public FacultyDtoOut getFacultyByStudentId(@PathVariable Long id) {
+        return studentService.getFacultyByStudentId(id);
     }
 }
