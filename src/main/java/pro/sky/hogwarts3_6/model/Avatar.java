@@ -2,7 +2,7 @@ package pro.sky.hogwarts3_6.model;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "avatars")
 public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

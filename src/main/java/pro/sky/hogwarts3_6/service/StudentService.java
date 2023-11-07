@@ -85,4 +85,6 @@ public class StudentService {
         Student student = studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException(id));
         return facultyMapper.toDto(student.getFaculty());
     }
+
+
 }

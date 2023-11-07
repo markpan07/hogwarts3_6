@@ -61,4 +61,6 @@ public class StudentController {
     public FacultyDtoOut getFacultyByStudentId(@PathVariable Long id) {
         return studentService.getFacultyByStudentId(id);
     }
+
+
 }
