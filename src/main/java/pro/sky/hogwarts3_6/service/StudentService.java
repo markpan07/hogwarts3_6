@@ -87,4 +87,17 @@ public class StudentService {
     }
 
 
+    public long countStudents() {
+        return studentRepository.countStudents();
+    }
+
+    public double getAverageAge() {
+        return studentRepository.getAverageAge();
+    }
+
+    public Collection<StudentDtoOut> getLastFiveStudents(){
+        return studentRepository.getLastFiveStudents().stream()
+                .map(entity -> studentMapper.toDto(entity))
+                .collect(Collectors.toList());
+    }
 }

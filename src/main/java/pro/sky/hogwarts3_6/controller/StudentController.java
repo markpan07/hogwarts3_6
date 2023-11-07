@@ -62,5 +62,18 @@ public class StudentController {
         return studentService.getFacultyByStudentId(id);
     }
 
+    @GetMapping("/count")
+    public long countStudents() {
+        return studentService.countStudents();
+    }
 
+    @GetMapping("/avgAge")
+    public double getAverageAge() {
+        return studentService.getAverageAge();
+    }
+
+    @GetMapping("/getLastFive")
+    public Collection<StudentDtoOut> getLastFiveStudents(){
+        return studentService.getLastFiveStudents();
+    }
 }
