@@ -14,14 +14,18 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import pro.sky.hogwarts3_6.dto.FacultyDtoOut;
 import pro.sky.hogwarts3_6.dto.StudentDtoOut;
 import pro.sky.hogwarts3_6.exception.FacultyNotFoundException;
 
+
 import javax.xml.ws.Response;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static pro.sky.hogwarts3_6.constants.FacultyTestConstants.*;
 import static pro.sky.hogwarts3_6.constants.StudentTestConstants.*;
@@ -78,7 +82,7 @@ public class FacultyControllerRestTemplateTest {
         Assertions.assertThat(responseEntity.getBody()).isEqualTo("Faculty with id = " + INCORRECT_FACULTY_ID + " is not found");
 
     }
-
+    @Transactional
     @Test
     void testUpdateFaculty_shouldSucceed() throws JsonProcessingException {
         ResponseEntity<?> responseEntity = restTemplate.exchange("/faculties/" + FACULTY_ID_3,
@@ -92,23 +96,29 @@ public class FacultyControllerRestTemplateTest {
         Assertions.assertThat(expectedCollectionAfterEdit).isEqualTo(actualCollectionAfterEdit);
     }
 
-    /*
+
     //Не понимаю что за ошибка "нарушение ссылочной целостности". В Постмане все отрабатывает корректно, код 200.
 
     @Test
-    void testDeleteFaculty_shouldSucceed(){
-        ResponseEntity<?> responseEntity = restTemplate.exchange("/faculties/" + FACULTY_ID_2,
+    void testDeleteFaculty_shouldSucceed() throws JsonProcessingException {
+        Collection<?> collection = restTemplate.getForObject("/faculties/", Collection.class);
+
+        ResponseEntity<?> responseEntity = restTemplate.exchange("/faculties/" + FACULTY_ID_3,
                 HttpMethod.DELETE,
                 null,
                 FacultyDtoOut.class);
 
-        Assertions.assertThat(responseEntity.getBody()).isEqualTo(FACULTY_DTO_OUT_2);
+        Assertions.assertThat(responseEntity.getBody()).isEqualTo(FACULTY_DTO_OUT_3_EDIT);
         Assertions.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+
 
     }
 
 
-     */
+
+
+
     @Test
     void testGetFaculties_shouldReturnAllFaculties() throws JsonProcessingException {
         Collection<?> collection = restTemplate.getForObject("/faculties/", Collection.class);
@@ -117,17 +127,15 @@ public class FacultyControllerRestTemplateTest {
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
-    /*
-    //Я не понимаю почему тест не проходит. Он абсолютно идентичен тому что выше, но выскакивает ошибка сериализации.
 
     @Test
     void testGetFaculties_shouldReturnFacultiesWithColorOrName() throws JsonProcessingException {
-        Collection<?> collection = restTemplate.getForObject("/faculties/colorOrName=" + FACULTY_COLOR_1, Collection.class);
+        Collection<?> collection = restTemplate.getForObject("/faculties?colorOrName=" + FACULTY_COLOR_1, Collection.class);
         String expected = objectMapper.writeValueAsString(ALL_FACULTIES_WITH_COLOR_1);
         String actual = objectMapper.writeValueAsString(collection);
         Assertions.assertThat(actual).isEqualTo(expected);
     }
-    */
+
 
     @Test
     void testGetStudentsByFacultyId() throws JsonProcessingException {
