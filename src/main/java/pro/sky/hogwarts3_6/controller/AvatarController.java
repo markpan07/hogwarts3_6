@@ -12,6 +12,7 @@ import pro.sky.hogwarts3_6.service.AvatarService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/avatar")
@@ -54,5 +55,10 @@ public class AvatarController {
              InputStream in = new FileInputStream(avatar.getFilePath())) {
             in.transferTo(out);
         }
+    }
+
+    @GetMapping
+    public Collection<Avatar> findAvatars(@RequestParam int page, @RequestParam int pageSize) {
+        return avatarService.find(page - 1, pageSize);
     }
 }

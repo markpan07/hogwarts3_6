@@ -1,6 +1,7 @@
 package pro.sky.hogwarts3_6.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.hogwarts3_6.exception.StudentNotFoundException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 
 @Service
 public class AvatarService {
@@ -74,5 +76,9 @@ public class AvatarService {
     @Transactional
     public Avatar find(long studentId) {
         return avatarRepository.findByStudentId(studentId).orElseThrow(()-> new StudentNotFoundException(studentId));
+    }
+
+    public Collection<Avatar> find(int page, int pageSize) {
+        return avatarRepository.findAll(PageRequest.of(page, pageSize)).getContent();
     }
 }
