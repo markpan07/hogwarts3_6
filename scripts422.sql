@@ -3,7 +3,7 @@ CREATE TABLE car
     id      SERIAL PRIMARY KEY,
     company TEXT,
     brand   TEXT
-)
+);
 
 CREATE TABLE person
 (
@@ -12,7 +12,7 @@ CREATE TABLE person
     age           INT,
     drive_license BOOLEAN,
     car_id        INT REFERENCES car (id)
-)
+);
 
 --
 
