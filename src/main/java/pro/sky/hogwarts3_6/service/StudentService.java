@@ -1,5 +1,7 @@
 package pro.sky.hogwarts3_6.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pro.sky.hogwarts3_6.dto.FacultyDtoOut;
 import pro.sky.hogwarts3_6.dto.StudentDtoIn;
@@ -25,6 +27,8 @@ public class StudentService {
     private final FacultyMapper facultyMapper;
     private final AvatarRepository avatarRepository;
 
+    private final static Logger logger = LoggerFactory.getLogger(StudentService.class);
+
     public StudentService(StudentRepository studentRepository,
                           FacultyRepository facultyRepository,
                           StudentMapper studentMapper,
@@ -38,14 +42,17 @@ public class StudentService {
     }
 
     public StudentDtoOut getStudent(Long id) {
+        logger.info("getStudent method was invoked");
         return studentMapper.toDto(studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException(id)));
     }
 
     public StudentDtoOut createStudent(StudentDtoIn dto) {
+        logger.info("createStudent method was invoked");
         return studentMapper.toDto(studentRepository.save(studentMapper.toEntity(dto)));
     }
 
     public StudentDtoOut updateStudent(Long id, StudentDtoIn dto) {
+        logger.info("updateStudent method was invoked");
         Student oldStudent = studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException(id));
         oldStudent.setAge(dto.getAge());
         oldStudent.setName(dto.getName());
@@ -54,6 +61,7 @@ public class StudentService {
     }
 
     public StudentDtoOut deleteStudent(Long id) {
+        logger.info("deleteStudent method was invoked");
         StudentDtoOut dto = studentMapper.toDto(studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException(id)));
         studentRepository.deleteById(id);
         return dto;
@@ -61,6 +69,7 @@ public class StudentService {
 
 
     public Collection<StudentDtoOut> getAllStudents() {
+        logger.info("getAllStudents method was invoked");
         Collection<StudentDtoOut> collection = studentRepository.findAll().stream()
                 .map(entity -> studentMapper.toDto(entity))
                 .collect(Collectors.toList());
@@ -68,6 +77,7 @@ public class StudentService {
     }
 
     public Collection<StudentDtoOut> findByAge(Integer age) {
+        logger.info("findByAge method was invoked");
         Collection<StudentDtoOut> collection = studentRepository.findByAge(age).stream()
                 .map(entity -> studentMapper.toDto(entity))
                 .collect(Collectors.toList());
@@ -75,6 +85,7 @@ public class StudentService {
     }
 
     public Collection<StudentDtoOut> findByAgeBetween(Integer min, Integer max) {
+        logger.info("findByAgeBetween method was invoked");
         Collection<StudentDtoOut> collection = studentRepository.findByAgeBetween(min, max).stream()
                 .map(entity -> studentMapper.toDto(entity))
                 .collect(Collectors.toList());
@@ -82,20 +93,24 @@ public class StudentService {
     }
 
     public FacultyDtoOut getFacultyByStudentId(Long id) {
+        logger.info("getFacultyByStudentId method was invoked");
         Student student = studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException(id));
         return facultyMapper.toDto(student.getFaculty());
     }
 
 
     public long countStudents() {
+        logger.info("countStudents method was invoked");
         return studentRepository.countStudents();
     }
 
     public double getAverageAge() {
+        logger.info("getAverageAge method was invoked");
         return studentRepository.getAverageAge();
     }
 
     public Collection<StudentDtoOut> getLastFiveStudents(){
+        logger.info("getLastFiveStudents method was invoked");
         return studentRepository.getLastFiveStudents().stream()
                 .map(entity -> studentMapper.toDto(entity))
                 .collect(Collectors.toList());

@@ -1,9 +1,9 @@
-SELECT * from student where age> 10 and age <23;
+SELECT * from students where age> 10 and age <23;
 
-select name from student
+select name from students;
 
-select * from student where name like "%e%"
+select * from students where name like '%e%';
 
-select * from student where age < id
+select * from students where age < id;
 
-select * from student order by age
+select * from students order by age;

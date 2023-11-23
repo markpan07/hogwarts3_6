@@ -1,5 +1,7 @@
 package pro.sky.hogwarts3_6.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class AvatarService {
     private final String avatarsDir;
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
+    private final static Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     public AvatarService(AvatarRepository avatarRepository,
                          @Value("${avatars.dir}") String avatarsDir,
@@ -37,6 +40,7 @@ public class AvatarService {
 
     @Transactional
     public void upload(Long studentId, MultipartFile file) throws IOException {
+        logger.info("upload method was invoked");
 
         Student student = studentRepository.findById(studentId).orElseThrow(()-> new StudentNotFoundException(studentId));
 
@@ -57,6 +61,7 @@ public class AvatarService {
     }
 
     private String saveFile(MultipartFile file, Student student) {
+        logger.info("saveFile method was invoked");
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null) {
             originalFilename = "file.jpg";
@@ -75,10 +80,12 @@ public class AvatarService {
 
     @Transactional
     public Avatar find(long studentId) {
+        logger.info("find method was invoked");
         return avatarRepository.findByStudentId(studentId).orElseThrow(()-> new StudentNotFoundException(studentId));
     }
 
     public Collection<Avatar> find(int page, int pageSize) {
+        logger.info("find method was invoked");
         return avatarRepository.findAll(PageRequest.of(page, pageSize)).getContent();
     }
 }
