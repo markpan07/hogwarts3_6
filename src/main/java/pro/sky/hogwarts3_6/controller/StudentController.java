@@ -1,21 +1,22 @@
 package pro.sky.hogwarts3_6.controller;
 
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import pro.sky.hogwarts3_6.dto.FacultyDtoIn;
 import pro.sky.hogwarts3_6.dto.FacultyDtoOut;
 import pro.sky.hogwarts3_6.dto.StudentDtoIn;
 import pro.sky.hogwarts3_6.dto.StudentDtoOut;
-import pro.sky.hogwarts3_6.repository.StudentRepository;
-import pro.sky.hogwarts3_6.service.FacultyService;
 import pro.sky.hogwarts3_6.service.StudentService;
 
 import java.util.Collection;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/students")
 public class StudentController {
 
+    public final static Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     private final StudentService studentService;
 
@@ -73,7 +74,29 @@ public class StudentController {
     }
 
     @GetMapping("/getLastFive")
-    public Collection<StudentDtoOut> getLastFiveStudents(){
+    public Collection<StudentDtoOut> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
+
+    // тренировка Стрим апи
+    @GetMapping("/getAllNameStartsA")
+    public Collection<String> getAllNameStartsAStream() {
+        return studentService.getAllNameStartsAStream();
+    }
+
+    @GetMapping("/getAverageAge")
+    public double getAverageAgeStream() {
+        return studentService.getAverageAgeStream();
+    }
+
+    @GetMapping("/calulateExample")
+    public int calculateExample() {
+        long startTime = System.currentTimeMillis();
+        int sum = IntStream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b);
+        logger.info("Performing time: {}", System.currentTimeMillis()-startTime);
+        return sum;
+    }
+
 }

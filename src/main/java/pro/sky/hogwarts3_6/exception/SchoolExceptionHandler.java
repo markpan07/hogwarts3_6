@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class SchoolExceptionHandler {
     private final static Logger logger = LoggerFactory.getLogger(SchoolExceptionHandler.class);
+
     @ExceptionHandler({
             FacultyNotFoundException.class,
-            StudentNotFoundException.class})
+            StudentNotFoundException.class,
+            FacultyListIsEmptyException.class,
+            StudentListIsEmptyException.class})
 
     public ResponseEntity<?> handleNotFound(NotFoundException e) {
         logger.error("NotFoundException was thrown");

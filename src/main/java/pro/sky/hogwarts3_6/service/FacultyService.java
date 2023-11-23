@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pro.sky.hogwarts3_6.dto.FacultyDtoIn;
 import pro.sky.hogwarts3_6.dto.FacultyDtoOut;
 import pro.sky.hogwarts3_6.dto.StudentDtoOut;
+import pro.sky.hogwarts3_6.exception.FacultyListIsEmptyException;
 import pro.sky.hogwarts3_6.exception.FacultyNotFoundException;
 import pro.sky.hogwarts3_6.mapper.FacultyMapper;
 import pro.sky.hogwarts3_6.mapper.StudentMapper;
@@ -14,6 +15,7 @@ import pro.sky.hogwarts3_6.repository.FacultyRepository;
 import pro.sky.hogwarts3_6.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,5 +85,12 @@ public class FacultyService {
         return studentRepository.findByFaculty_Id(id).stream()
                 .map(entity -> studentMapper.toDto(entity))
                 .collect(Collectors.toList());
+    }
+
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElseThrow(()-> new FacultyListIsEmptyException());
     }
 }

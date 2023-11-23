@@ -7,6 +7,7 @@ import pro.sky.hogwarts3_6.dto.FacultyDtoOut;
 import pro.sky.hogwarts3_6.dto.StudentDtoIn;
 import pro.sky.hogwarts3_6.dto.StudentDtoOut;
 import pro.sky.hogwarts3_6.exception.FacultyNotFoundException;
+import pro.sky.hogwarts3_6.exception.StudentListIsEmptyException;
 import pro.sky.hogwarts3_6.exception.StudentNotFoundException;
 import pro.sky.hogwarts3_6.mapper.FacultyMapper;
 import pro.sky.hogwarts3_6.mapper.StudentMapper;
@@ -114,5 +115,22 @@ public class StudentService {
         return studentRepository.getLastFiveStudents().stream()
                 .map(entity -> studentMapper.toDto(entity))
                 .collect(Collectors.toList());
+    }
+
+    public Collection<String> getAllNameStartsAStream() {
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .map(name -> name.toUpperCase())
+                .filter(name-> name.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public double getAverageAgeStream() {
+        return studentRepository.findAll().stream()
+                .map(Student::getAge)
+                .mapToInt(o->o)
+                .average()
+                .orElseThrow(()-> new StudentListIsEmptyException());
     }
 }
