@@ -78,4 +78,6 @@ public class Student {
         return age == student.age && Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(faculty, student.faculty);
     }
 
+
+
 }

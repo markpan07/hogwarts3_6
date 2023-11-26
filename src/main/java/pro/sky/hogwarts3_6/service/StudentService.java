@@ -17,6 +17,7 @@ import pro.sky.hogwarts3_6.repository.FacultyRepository;
 import pro.sky.hogwarts3_6.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -132,5 +133,63 @@ public class StudentService {
                 .mapToInt(o->o)
                 .average()
                 .orElseThrow(()-> new StudentListIsEmptyException());
+    }
+
+    //Добавил метод конкатенации строк для увеличения времени исполнения кода
+    public void printNotSync() {
+        List<Student> list = studentRepository.findAll();
+        System.out.println(list.get(0));
+        concatinationStringInCycle();
+        System.out.println(list.get(1));
+
+        Thread thread1 = new Thread(()->{
+            System.out.println(list.get(2));
+            concatinationStringInCycle();
+            System.out.println(list.get(3));
+        });
+
+        Thread thread2 = new Thread(()->{
+            System.out.println(list.get(4));
+            concatinationStringInCycle();
+            System.out.println(list.get(5));
+        });
+
+        thread1.start();
+        thread2.start();
+
+    }
+
+    public void printSync() {
+        List<Student> list = studentRepository.findAll();
+        printSynchronized(list.get(0));
+        concatinationStringInCycle();
+        printSynchronized(list.get(1));
+
+        Thread thread1 = new Thread(()->{
+            printSynchronized(list.get(2));
+            concatinationStringInCycle();
+            printSynchronized(list.get(3));
+        });
+
+        Thread thread2 = new Thread(()->{
+            printSynchronized(list.get(4));
+            concatinationStringInCycle();
+            printSynchronized(list.get(5));
+        });
+
+        thread1.start();
+        thread2.start();
+
+    }
+
+    public synchronized void printSynchronized(Object o){
+        System.out.println(o);
+    }
+
+    public static void concatinationStringInCycle(){
+        String s = "";
+        for(int i = 0; i < 10_000; i++){
+            s = s + i;
+        }
     }
 }

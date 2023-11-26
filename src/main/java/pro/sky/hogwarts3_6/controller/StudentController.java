@@ -99,4 +99,13 @@ public class StudentController {
         return sum;
     }
 
+    @GetMapping("/printNotSync")
+    public void printNotSync(){
+        studentService.printNotSync();
+    }
+
+    @GetMapping("/printSync")
+    public void printSync(){
+        studentService.printNotSync();
+    }
 }
